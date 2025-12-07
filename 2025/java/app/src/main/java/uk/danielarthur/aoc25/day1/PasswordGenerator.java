@@ -4,13 +4,7 @@ import java.util.List;
 
 public class PasswordGenerator {
 
-  List<String> puzzleInput;
-
-  public PasswordGenerator(List<String> puzzleInput) {
-    this.puzzleInput = puzzleInput;
-  }
-
-  public int generatePassword() {
+  public int generatePassword(List<String> puzzleInput) {
     int landedOnZero = 0;
     Dial dial = new Dial();
     for(String instruction : puzzleInput) {
@@ -28,7 +22,7 @@ public class PasswordGenerator {
     return landedOnZero;
   }
 
-  public int generateAdvancedPassword() {
+  public int generateAdvancedPassword(List<String> puzzleInput) {
     int zeroCount = 0;
     Dial dial = new Dial();
     for(String instruction : puzzleInput) {
