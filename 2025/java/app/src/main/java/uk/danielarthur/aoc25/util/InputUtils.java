@@ -36,6 +36,23 @@ public abstract class InputUtils {
     }
   }
 
+  public static char[][] getInputAsCharMap(Class<?> cls) {
+    return getInputAsCharMap(cls, DEFAULT_INPUT_FILE);
+  }
+
+  public static char[][] getInputAsCharMap(Class<?> cls, String path) {
+    List<String> inputAsList = getInputAsList(cls, path);
+    int height = inputAsList.size();
+    int width = inputAsList.get(0).length();
+    char[][] map = new char[width][height];
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        map[x][y] = inputAsList.get(y).charAt(x);
+      }
+    }
+    return map;
+  }
+
   private static BufferedReader getBufferedReader(Class<?> cls, String path) {
     InputStream input = cls.getResourceAsStream(path);
     return new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
