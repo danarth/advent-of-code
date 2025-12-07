@@ -7,8 +7,13 @@ public abstract class AdventOfCodeChallenge {
   public abstract String getPart2Answer();
   
   public void printAnswers() {
+    System.out.println();
+    System.out.println("------");
+    System.out.println(this.getClass().getSimpleName());
+    System.out.println("------");
     System.out.println("Part 1: " + getPart1Answer());
     System.out.println("Part 2: " + getPart2Answer());
+    System.out.println("------");
   }
   
 }
