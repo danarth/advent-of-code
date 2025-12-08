@@ -4,6 +4,7 @@ import uk.danielarthur.aoc25.day1.Day1;
 import uk.danielarthur.aoc25.day2.Day2;
 import uk.danielarthur.aoc25.day3.Day3;
 import uk.danielarthur.aoc25.day4.Day4;
+import uk.danielarthur.aoc25.day5.Day5;
 
 public class Main {
 
@@ -19,5 +20,8 @@ public class Main {
 
     Day4 day4 = new Day4();
     day4.printAnswers();
+
+    Day5 day5 = new Day5();
+    day5.printAnswers();
   }
 }
