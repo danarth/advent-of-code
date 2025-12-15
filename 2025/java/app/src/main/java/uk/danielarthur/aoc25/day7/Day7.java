@@ -20,7 +20,7 @@ public class Day7 extends AdventOfCodeChallenge {
 
   @Override
   public String getPart2Answer() {
-    return "";
+    return String.valueOf(manifoldSimulator.quantumSimulate(input));
   }
 
 }

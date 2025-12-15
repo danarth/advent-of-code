@@ -14,4 +14,10 @@ public class ManifoldSimulatorTest {
     assertEquals(21, ms.simulate(input));
   }
 
+  @Test void testQuantumSimulateRealInput() {
+    char[][] input = InputUtils.getInputAsCharMap(getClass());
+    ManifoldSimulator ms = new ManifoldSimulator();
+    assertEquals(40, ms.quantumSimulate(input));
+  }
+
 }

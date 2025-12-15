@@ -1,87 +1,65 @@
 package uk.danielarthur.aoc25.day7;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ManifoldDiagram {
 
+  private static final char EMITTER = 'S';
+  private static final char SPLITTER = '^';
+  private static final char OUT_OF_BOUNDS = 'x';
+
   private char[][] diagram;
+  private Map<String, SplitterTree> seen;
 
   public ManifoldDiagram(char[][] diagram) {
     this.diagram = diagram;
+    this.seen = new HashMap<>();
   }
 
-
-  public ManifoldTree toTree() {
-    int emitterLocation = 0;
+  public SplitterTree parseTree() {
     boolean foundEmitter = false;
-    while(emitterLocation < getWidth() && !foundEmitter) {
-      if(get(emitterLocation, 0) == CellStatus.EMITTER) {
+    int x = 0;
+    while(x < diagram.length && !foundEmitter) {
+      if (get(x, 0) == EMITTER) {
         foundEmitter = true;
         break;
       }
-      emitterLocation++;
+      x++;
     }
-    ManifoldNode root = parseNode(emitterLocation, 0);
-    return new ManifoldTree(root);
+    if (foundEmitter) {
+      return parseTree(x, 1);
+    }
+    return null;
   }
 
-  /**
-   * given a splitter at the current location, create a node with everything underneath it
-   */
-  private ManifoldNode parseNode(int x, int y) {
-    CellStatus current = get(x, y);
-    if (current == null) return null;
-    if (current == CellStatus.SPLITTER) {
-      ManifoldNode left = parseNode(x - 1, y);
-      ManifoldNode right = parseNode(x + 1, y);
-      ManifoldNode node = new ManifoldNode(x, y);
-      node.setLeft(left);
-      node.setRight(right);
+  private SplitterTree parseTree(int x, int y) {
+    char current = get(x, y);
+    String xy = x + "," + y;
+    if (seen.containsKey(xy)) {
+      return seen.get(xy);
+    }
+    if (current == OUT_OF_BOUNDS) return null;
+    if (current == SPLITTER) {
+      SplitterTree node = new SplitterTree(xy);
+      node.setLeft(parseTree(x - 1, y));
+      node.setRight(parseTree(x + 1, y));
+      seen.put(xy, node);
       return node;
     }
-    CellStatus below = get(x, y + 1);
-    if (below == null) {
-      return new ManifoldNode(x, y);
+    char below = get(x, y + 1);
+    if (below == OUT_OF_BOUNDS) {
+      return new SplitterTree(xy);
     } else {
-      return parseNode(x, y + 1);
+      return parseTree(x, y + 1);
     }
   }
 
-  public boolean splitBeam(int x, int y) {
-    boolean isSplit = false;
-    if (get(x, y - 1) == CellStatus.EMITTER && get(x, y) == CellStatus.EMPTY) {
-      diagram[x][y] = CellStatus.BEAM.getSymbol();
-    } else if (get(x, y - 1) == CellStatus.BEAM && get(x, y) == CellStatus.EMPTY) {
-      diagram[x][y] = CellStatus.BEAM.getSymbol();
-    } else if (
-        get(x, y) == CellStatus.SPLITTER &&
-        get(x, y - 1) == CellStatus.BEAM
-    ) {
-      if (get(x - 1, y) == CellStatus.EMPTY) {
-        diagram[x - 1][y] = CellStatus.BEAM.getSymbol();
-        isSplit = true;
-      }
-      if (get(x + 1, y) == CellStatus.EMPTY) {
-        diagram[x + 1][y] = CellStatus.BEAM.getSymbol();
-        isSplit = true;
-      }
-    }
-    return isSplit;
-  }
-
-  public CellStatus get(int x, int y) {
+  public char get(int x, int y) {
     if (x < 0 || x >= diagram.length || y < 0 || y >= diagram[0].length) {
-      return null;
+      return OUT_OF_BOUNDS;
     }
-    char value = diagram[x][y];
-    if (value == CellStatus.EMITTER.getSymbol()) {
-      return CellStatus.EMITTER;
-    }
-    if (value == CellStatus.SPLITTER.getSymbol()) {
-      return CellStatus.SPLITTER;
-    }
-    if (value == CellStatus.BEAM.getSymbol()) {
-      return CellStatus.BEAM;
-    }
-    return CellStatus.EMPTY;
+    return diagram[x][y];
   }
 
   public int getWidth() {
@@ -102,23 +80,6 @@ public class ManifoldDiagram {
       out += "\n";
     }
     return out;
-  }
-
-  public enum CellStatus {
-    EMITTER('S'),
-    BEAM('|'),
-    SPLITTER('^'),
-    EMPTY('.');
-
-    private char symbol;
-
-    private CellStatus(char symbol) {
-      this.symbol = symbol;
-    }
-
-    public char getSymbol() {
-      return symbol;
-    }
   }
 
 }
