@@ -10,14 +10,14 @@ public class ManifoldDiagram {
   private static final char OUT_OF_BOUNDS = 'x';
 
   private char[][] diagram;
-  private Map<String, SplitterTree> seen;
+  private Map<String, ManifoldNode> seen;
 
   public ManifoldDiagram(char[][] diagram) {
     this.diagram = diagram;
     this.seen = new HashMap<>();
   }
 
-  public SplitterTree parseTree() {
+  public ManifoldNode parseTree() {
     boolean foundEmitter = false;
     int x = 0;
     while(x < diagram.length && !foundEmitter) {
@@ -33,7 +33,7 @@ public class ManifoldDiagram {
     return null;
   }
 
-  private SplitterTree parseTree(int x, int y) {
+  private ManifoldNode parseTree(int x, int y) {
     char current = get(x, y);
     String xy = x + "," + y;
     if (seen.containsKey(xy)) {
@@ -41,7 +41,7 @@ public class ManifoldDiagram {
     }
     if (current == OUT_OF_BOUNDS) return null;
     if (current == SPLITTER) {
-      SplitterTree node = new SplitterTree(xy);
+      ManifoldNode node = new ManifoldNode(xy);
       node.setLeft(parseTree(x - 1, y));
       node.setRight(parseTree(x + 1, y));
       seen.put(xy, node);
@@ -49,7 +49,7 @@ public class ManifoldDiagram {
     }
     char below = get(x, y + 1);
     if (below == OUT_OF_BOUNDS) {
-      return new SplitterTree(xy);
+      return new ManifoldNode(xy);
     } else {
       return parseTree(x, y + 1);
     }
@@ -60,26 +60,6 @@ public class ManifoldDiagram {
       return OUT_OF_BOUNDS;
     }
     return diagram[x][y];
-  }
-
-  public int getWidth() {
-    return diagram.length;
-  }
-
-  public int getHeight() {
-    return diagram[0].length;
-  }
-
-  @Override
-  public String toString() {
-    String out = "";
-    for (int y = 0; y < getHeight(); y++) {
-      for (int x = 0; x < getWidth(); x++) {
-        out += diagram[x][y];
-      }
-      out += "\n";
-    }
-    return out;
   }
 
 }
