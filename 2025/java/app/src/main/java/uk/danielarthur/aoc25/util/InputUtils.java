@@ -6,13 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 public abstract class InputUtils {
-  
+
   private static final String DEFAULT_INPUT_FILE = "input.txt";
 
   public static List<String> getInputAsList(Class<?> cls) {
@@ -83,5 +81,5 @@ public abstract class InputUtils {
     InputStream input = cls.getResourceAsStream(path);
     return new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
   }
-  
+
 }

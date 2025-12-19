@@ -7,6 +7,7 @@ import uk.danielarthur.aoc25.day4.Day4;
 import uk.danielarthur.aoc25.day5.Day5;
 import uk.danielarthur.aoc25.day6.Day6;
 import uk.danielarthur.aoc25.day7.Day7;
+import uk.danielarthur.aoc25.day8.Day8;
 
 public class Main {
 
@@ -31,5 +32,8 @@ public class Main {
 
     Day7 day7 = new Day7();
     day7.printAnswers();
+
+    Day8 day8 = new Day8();
+    day8.printAnswers();
   }
 }
